@@ -33,7 +33,7 @@ type LoriotProviderModel struct {
 }
 
 func (p *LoriotProvider) Metadata(ctx context.Context, req provider.MetadataRequest, resp *provider.MetadataResponse) {
-	resp.TypeName = "scaffolding"
+	resp.TypeName = "loriot"
 	resp.Version = p.version
 }
 
