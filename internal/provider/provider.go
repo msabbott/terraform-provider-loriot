@@ -5,7 +5,6 @@ package provider
 
 import (
 	"context"
-	"net/http"
 	"os"
 
 	"bitbucket.org/msabbott/loriot-go-client"
@@ -126,8 +125,14 @@ func (p *LoriotProvider) Configure(ctx context.Context, req provider.ConfigureRe
 		return
 	}
 
+	cfg := loriot.NewConfiguration()
+
+	cfg.BasePath = host
+	cfg.DefaultHeader["Authorization"] = "Bearer " + key
+
+	client := loriot.NewAPIClient(cfg)
+
 	// Example client configuration for data sources and resources
-	client := http.DefaultClient
 	resp.DataSourceData = client
 	resp.ResourceData = client
 }
