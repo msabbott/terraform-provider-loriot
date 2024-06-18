@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 
+	"bitbucket.org/msabbott/loriot-go-client"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/function"
 	"github.com/hashicorp/terraform-plugin-framework/path"
