@@ -6,9 +6,11 @@ package provider
 import (
 	"context"
 	"net/http"
+	"os"
 
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/function"
+	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/provider"
 	"github.com/hashicorp/terraform-plugin-framework/provider/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -65,6 +67,63 @@ func (p *LoriotProvider) Configure(ctx context.Context, req provider.ConfigureRe
 
 	// Configuration values are now available.
 	// if data.Endpoint.IsNull() { /* ... */ }
+	if data.Host.IsUnknown() {
+		resp.Diagnostics.AddAttributeError(
+			path.Root("host"),
+			"Unknown Loriot instance Host",
+			"The provider cannot create the Loriot API client as there is an unknown configuration value for the Loriot instance. "+
+				"Either target apply the source of the value first, set the value statically in the configuration, or use the LORIOT_HOST environment variable.",
+		)
+	}
+
+	if data.APIKey.IsUnknown() {
+		resp.Diagnostics.AddAttributeError(
+			path.Root("apikey"),
+			"Unknown Loriot API Key",
+			"The provider cannot create the Loriot API client as there is an unknown configuration value for the Loriot API key "+
+				"Either target apply the source of the value first, set the value statically in the configuraiton, or use the LORIOT_API_KEY environment variable.",
+		)
+	}
+
+	// Default values to environment variables, but override
+	// with Terraform configuration value if set.
+	host := os.Getenv("LORIOT_HOST")
+	key := os.Getenv("LORIOT_API_KEY")
+
+	if !data.Host.IsNull() {
+		host = data.Host.ValueString()
+	}
+
+	if !data.APIKey.IsNull() {
+		key = data.APIKey.ValueString()
+	}
+
+	// If any of the expected configurations are missing, return
+	// errors with provider-specific guidance.
+
+	if host == "" {
+		resp.Diagnostics.AddAttributeError(
+			path.Root("host"),
+			"Missing Loriot instance Host",
+			"The provider cannot create the Loriot API client as there is a missing or empty value for the Loriot instance host. "+
+				"Set the host value in the configuration or use the LORIOT_HOST environment variable. "+
+				"If either is already set, ensure the value is not empty.",
+		)
+	}
+
+	if key == "" {
+		resp.Diagnostics.AddAttributeError(
+			path.Root("apikehy"),
+			"Missing Loriot API key",
+			"The provider cannot create the Loriot API client as there is a missing or empty value for the Loriot API key. "+
+				"Set the apikey value in the configuration or use the LORIOT_API_KEY environment variable. "+
+				"If either is already set, ensure the value is not empty.",
+		)
+	}
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Example client configuration for data sources and resources
 	client := http.DefaultClient
