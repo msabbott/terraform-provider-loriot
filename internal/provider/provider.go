@@ -146,6 +146,10 @@ func (p *LoriotProvider) Resources(ctx context.Context) []func() resource.Resour
 func (p *LoriotProvider) DataSources(ctx context.Context) []func() datasource.DataSource {
 	return []func() datasource.DataSource{
 		NewExampleDataSource,
+		NewUserDataSource,
+		NewUserUsageDataSource,
+		NewAppDataSource,
+		NewAppTokenDataSource,
 	}
 }
 
