@@ -78,7 +78,7 @@ func (p *LoriotProvider) Configure(ctx context.Context, req provider.ConfigureRe
 
 	if data.APIKey.IsUnknown() {
 		resp.Diagnostics.AddAttributeError(
-			path.Root("apikey"),
+			path.Root("key"),
 			"Unknown Loriot API Key",
 			"The provider cannot create the Loriot API client as there is an unknown configuration value for the Loriot API key "+
 				"Either target apply the source of the value first, set the value statically in the configuraiton, or use the LORIOT_API_KEY environment variable.",
@@ -113,7 +113,7 @@ func (p *LoriotProvider) Configure(ctx context.Context, req provider.ConfigureRe
 
 	if key == "" {
 		resp.Diagnostics.AddAttributeError(
-			path.Root("apikehy"),
+			path.Root("key"),
 			"Missing Loriot API key",
 			"The provider cannot create the Loriot API client as there is a missing or empty value for the Loriot API key. "+
 				"Set the apikey value in the configuration or use the LORIOT_API_KEY environment variable. "+
