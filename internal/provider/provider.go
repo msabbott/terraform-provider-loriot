@@ -128,7 +128,7 @@ func (p *LoriotProvider) Configure(ctx context.Context, req provider.ConfigureRe
 	cfg := loriot.NewConfiguration()
 
 	cfg.BasePath = host
-	cfg.DefaultHeader["Authorization"] = "Bearer " + key
+	cfg.AddDefaultHeader("Authorization", "Bearer "+key)
 
 	client := loriot.NewAPIClient(cfg)
 
