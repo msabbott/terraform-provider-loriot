@@ -1,3 +1,3 @@
-data "scaffolding_example" "example" {
-  configurable_attribute = "some-value"
+data "loriot_app" "example" {
+  id = "BE10000D"
 }

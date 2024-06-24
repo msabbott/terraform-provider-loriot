@@ -1,3 +1,3 @@
-provider "scaffolding" {
+provider "loriot" {
   # example configuration here
 }
