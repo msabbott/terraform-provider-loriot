@@ -140,6 +140,7 @@ func (p *LoriotProvider) Configure(ctx context.Context, req provider.ConfigureRe
 func (p *LoriotProvider) Resources(ctx context.Context) []func() resource.Resource {
 	return []func() resource.Resource{
 		NewExampleResource,
+		NewAppResource,
 	}
 }
 
