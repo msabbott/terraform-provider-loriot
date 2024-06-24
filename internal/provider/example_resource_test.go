@@ -37,7 +37,7 @@ func TestAccExampleResource(t *testing.T) {
 			},
 			// Update and Read testing
 			{
-				Config: testAccExampleResourceConfig("two"),
+				Config: providerConfig + testAccExampleResourceConfig("two"),
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("loriot_example.test", "configurable_attribute", "two"),
 				),
@@ -49,11 +49,6 @@ func TestAccExampleResource(t *testing.T) {
 
 func testAccExampleResourceConfig(configurableAttribute string) string {
 	return fmt.Sprintf(`
-provider "loriot" {
-  host = "https://api.example.com"
-  key  = "some-junk"
-}
-
 resource "loriot_example" "test" {
   configurable_attribute = %[1]q
 }

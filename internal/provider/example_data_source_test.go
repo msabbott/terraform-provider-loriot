@@ -16,7 +16,7 @@ func TestAccExampleDataSource(t *testing.T) {
 		Steps: []resource.TestStep{
 			// Read testing
 			{
-				Config: testAccExampleDataSourceConfig,
+				Config: providerConfig + testAccExampleDataSourceConfig,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("data.loriot_example.test", "id", "example-id"),
 				),
@@ -26,11 +26,6 @@ func TestAccExampleDataSource(t *testing.T) {
 }
 
 const testAccExampleDataSourceConfig = `
-provider "loriot" {
-  host = "https://api.example.com"
-  key  = "some-junk"
-}
-
 data "loriot_example" "test" {
   configurable_attribute = "example"
 }
