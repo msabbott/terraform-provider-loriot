@@ -26,6 +26,11 @@ func TestAccExampleDataSource(t *testing.T) {
 }
 
 const testAccExampleDataSourceConfig = `
+provider "loriot" {
+  host = "https://api.example.com"
+  key  = "some-junk"
+}
+
 data "loriot_example" "test" {
   configurable_attribute = "example"
 }

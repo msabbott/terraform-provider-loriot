@@ -6,8 +6,8 @@ package provider
 import (
 	"context"
 	"fmt"
-	"net/http"
 
+	"bitbucket.org/msabbott/loriot-go-client"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -28,7 +28,7 @@ func NewExampleResource() resource.Resource {
 
 // ExampleResource defines the resource implementation.
 type ExampleResource struct {
-	client *http.Client
+	client *loriot.APIClient
 }
 
 // ExampleResourceModel describes the resource data model.
@@ -75,7 +75,7 @@ func (r *ExampleResource) Configure(ctx context.Context, req resource.ConfigureR
 		return
 	}
 
-	client, ok := req.ProviderData.(*http.Client)
+	client, ok := req.ProviderData.(*loriot.APIClient)
 
 	if !ok {
 		resp.Diagnostics.AddError(
