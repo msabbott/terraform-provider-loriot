@@ -45,11 +45,13 @@ func (p *LoriotProvider) Schema(ctx context.Context, req provider.SchemaRequest,
 		Attributes: map[string]schema.Attribute{
 			"host": schema.StringAttribute{
 				MarkdownDescription: "Hostname of the Loriot instance",
-				Required:            true,
+				Required:            false,
+				Optional:            true,
 			},
 			"key": schema.StringAttribute{
 				MarkdownDescription: "API Key used to authenticate with the instance",
-				Required:            true,
+				Required:            false,
+				Optional:            true,
 				Sensitive:           true,
 			},
 		},
