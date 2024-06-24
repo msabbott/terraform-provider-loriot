@@ -30,7 +30,7 @@ Data source for a configured application
 - `devices_limit` (Number) Limit of devices which can be registered
 - `devices_used` (Number) Number of devices registered with the application
 - `mcast_devices_limit` (Number) Limit of multicate devices which can be registered
-- `mcast_devices_used` (Number) Number of multicast devices registed with the application
+- `mcast_devices_used` (Number) Number of multicast devices registered with the application
 - `organization_id` (Number) Identifier of the organization the application belongs to
 - `owner_id` (Number) User ID of the application owner
 - `visibility` (String) Visibility of the application

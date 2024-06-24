@@ -30,6 +30,6 @@ App resource
 - `created_date` (String) Creation date
 - `decimal_id` (Number) Application ID in decimal format
 - `devices_used` (Number) Number of devices registered with the application
-- `mcast_devices_used` (Number) Number of multicast devices registed with the application
+- `mcast_devices_used` (Number) Number of multicast devices registered with the application
 - `organization_id` (Number) Identifier of the organization the application belongs to
 - `owner_id` (Number) User ID of the application owner
