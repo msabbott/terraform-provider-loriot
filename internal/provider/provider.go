@@ -81,7 +81,7 @@ func (p *LoriotProvider) Configure(ctx context.Context, req provider.ConfigureRe
 			path.Root("key"),
 			"Unknown Loriot API Key",
 			"The provider cannot create the Loriot API client as there is an unknown configuration value for the Loriot API key "+
-				"Either target apply the source of the value first, set the value statically in the configuraiton, or use the LORIOT_API_KEY environment variable.",
+				"Either target apply the source of the value first, set the value statically in the configuration, or use the LORIOT_API_KEY environment variable.",
 		)
 	}
 

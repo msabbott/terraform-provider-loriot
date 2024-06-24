@@ -84,7 +84,7 @@ func (d *AppDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 				Computed:            true,
 			},
 			"mcast_devices_used": schema.Float64Attribute{
-				MarkdownDescription: "Number of multicast devices registed with the application",
+				MarkdownDescription: "Number of multicast devices registered with the application",
 				Computed:            true,
 			},
 			"mcast_devices_limit": schema.Float64Attribute{
