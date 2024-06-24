@@ -28,12 +28,12 @@ type AppDataSource struct {
 
 // AppDataSourceModel describes the data source data model.
 type AppDataSourceModel struct {
-	AppId          types.String  `tfsdk:"app_id"`
-	DecimalId      types.Float64 `tfsdk:"decimal_id"`
-	Name           types.String  `tfsdk:"name"`
-	OwnerId        types.Float64 `tfsdk:"owner_id"`
-	OrganizationId types.Float64 `tfsdk:"organization_id"`
-	//visibility
+	AppId             types.String  `tfsdk:"app_id"`
+	DecimalId         types.Float64 `tfsdk:"decimal_id"`
+	Name              types.String  `tfsdk:"name"`
+	OwnerId           types.Float64 `tfsdk:"owner_id"`
+	OrganizationId    types.Float64 `tfsdk:"organization_id"`
+	Visibility        types.String  `tfsdk:"visibility"`
 	CreatedDate       types.String  `tfsdk:"created_date"`
 	DevicesUsed       types.Float64 `tfsdk:"devices_used"`
 	DevicesLimit      types.Float64 `tfsdk:"devices_limit"`
@@ -69,6 +69,10 @@ func (d *AppDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 			},
 			"organization_id": schema.Float64Attribute{
 				MarkdownDescription: "Identifier of the organization the application belongs to",
+				Computed:            true,
+			},
+			"visibility": schema.StringAttribute{
+				MarkdownDescription: "Visibility of the application",
 				Computed:            true,
 			},
 			"created_date": schema.StringAttribute{
@@ -142,7 +146,7 @@ func (d *AppDataSource) Read(ctx context.Context, req datasource.ReadRequest, re
 	data.Name = types.StringValue(app.Name)
 	data.OwnerId = types.Float64Value(app.Ownerid)
 	data.OrganizationId = types.Float64Value(app.OrganizationId)
-	//visibility
+	data.Visibility = types.StringValue(app.Visibility)
 	data.CreatedDate = types.StringValue(app.Created)
 	data.DevicesUsed = types.Float64Value(app.Devices)
 	data.DevicesLimit = types.Float64Value(app.DeviceLimit)
