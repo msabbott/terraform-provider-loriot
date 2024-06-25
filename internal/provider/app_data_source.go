@@ -28,17 +28,8 @@ type AppDataSource struct {
 
 // AppDataSourceModel describes the data source data model.
 type AppDataSourceModel struct {
-	AppId             types.String  `tfsdk:"app_id"`
-	DecimalId         types.Float64 `tfsdk:"decimal_id"`
-	Name              types.String  `tfsdk:"name"`
-	OwnerId           types.Float64 `tfsdk:"owner_id"`
-	OrganizationId    types.Float64 `tfsdk:"organization_id"`
-	Visibility        types.String  `tfsdk:"visibility"`
-	CreatedDate       types.String  `tfsdk:"created_date"`
-	DevicesUsed       types.Float64 `tfsdk:"devices_used"`
-	DevicesLimit      types.Float64 `tfsdk:"devices_limit"`
-	MCastDevicesUsed  types.Float64 `tfsdk:"mcast_devices_used"`
-	MCastDevicesLimit types.Float64 `tfsdk:"mcast_devices_limit"`
+	ID                types.String                        `tfsdk:"id"`
+	AppId             types.String                        `tfsdk:"app_id"`
 }
 
 func (d *AppDataSource) Metadata(ctx context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
@@ -51,6 +42,10 @@ func (d *AppDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 		MarkdownDescription: "Data source for a configured application",
 
 		Attributes: map[string]schema.Attribute{
+			"id": schema.StringAttribute{
+				MarkdownDescription: "Synonym for app_id",
+				Computed:            true,
+			},
 			"app_id": schema.StringAttribute{
 				MarkdownDescription: "Application ID in hexadecimal format",
 				Required:            true,
@@ -141,6 +136,7 @@ func (d *AppDataSource) Read(ctx context.Context, req datasource.ReadRequest, re
 
 	// For the purposes of this example code, hardcoding a response value to
 	// save into the Terraform state.
+	data.ID = types.StringValue(app.AppHexId)
 	data.AppId = types.StringValue(app.AppHexId)
 	data.DecimalId = types.Float64Value(app.Id)
 	data.Name = types.StringValue(app.Name)
