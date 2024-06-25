@@ -92,7 +92,7 @@ func (d *AppDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 				Computed:            true,
 			},
 			"mcast_devices_limit": schema.Float64Attribute{
-				MarkdownDescription: "Limit of multicate devices which can be registered",
+				MarkdownDescription: "Limit of multicast devices which can be registered",
 				Computed:            true,
 			},
 		},
