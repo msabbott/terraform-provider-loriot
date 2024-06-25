@@ -86,5 +86,7 @@ jobs:
       - run: go mod download
       - env:
           TF_ACC: "1"
+          LORIOT_HOST: "http://localhost"
+          LORIOT_API_KEY: "some-junk"
         run: go test -v -cover ./internal/provider/
         timeout-minutes: 10
