@@ -75,6 +75,8 @@ jobs:
           #- '1.10.*'
     steps:
       - uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
       - uses: actions/setup-go@cdcb36043654635271a94b9a6d1392de5bb323a7 # v5.0.1
         with:
           go-version-file: 'go.mod'
@@ -88,5 +90,27 @@ jobs:
           TF_ACC: "1"
           LORIOT_HOST: "http://localhost"
           LORIOT_API_KEY: "some-junk"
-        run: go test -v -cover ./internal/provider/
+        run: go test -v -cover -coverprofile=coverage.out ./internal/provider/
         timeout-minutes: 10
+      - name: Upload Test Coverage
+        uses: actions/upload-artifact@v4
+        with:
+          name: test_coverage
+          path: coverage.out
+  sonarcloud:
+    name: SonarCloud
+    needs: test # Ensure that the "test" job is completed before running this
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+      - name: Retrieve test coverage report
+        uses: actions/download-artifact@v4
+        with:
+          name: test_coverage
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
