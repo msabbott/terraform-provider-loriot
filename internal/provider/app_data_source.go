@@ -30,6 +30,30 @@ type AppDataSource struct {
 type AppDataSourceModel struct {
 	ID                types.String                        `tfsdk:"id"`
 	AppId             types.String                        `tfsdk:"app_id"`
+	DecimalId         types.Float64                       `tfsdk:"decimal_id"`
+	Name              types.String                        `tfsdk:"name"`
+	OwnerId           types.Float64                       `tfsdk:"owner_id"`
+	OrganizationId    types.Float64                       `tfsdk:"organization_id"`
+	Visibility        types.String                        `tfsdk:"visibility"`
+	CreatedDate       types.String                        `tfsdk:"created_date"`
+	DevicesUsed       types.Float64                       `tfsdk:"devices_used"`
+	DevicesLimit      types.Float64                       `tfsdk:"devices_limit"`
+	MCastDevicesUsed  types.Float64                       `tfsdk:"mcast_devices_used"`
+	MCastDevicesLimit types.Float64                       `tfsdk:"mcast_devices_limit"`
+	ConfigDeviceBase  *AppConfigDeviceBaseDataSourceModel `tfsdk:"config_device_base"`
+}
+
+type AppConfigDeviceBaseDataSourceModel struct {
+	DeviceClass        types.String `tfsdk:"device_class"`
+	RxW                types.Int64  `tfsdk:"rxw"`
+	DutyCycle          types.Int64  `tfsdk:"duty_cycle"`
+	Address            types.Bool   `tfsdk:"address"`
+	AddressMin         types.Int64  `tfsdk:"address_min"`
+	AddressMax         types.Int64  `tfsdk:"address_max"`
+	AddressFix         types.Int64  `tfsdk:"address_fix"`
+	SequenceRelax      types.Bool   `tfsdk:"sequence_relax"`
+	SequenceDoNotReset types.Bool   `tfsdk:"sequence_do_not_reset"`
+	AddressCountLimit  types.Int64  `tfsdk:"address_count_limit"`
 }
 
 func (d *AppDataSource) Metadata(ctx context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
@@ -91,6 +115,22 @@ func (d *AppDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 				Computed:            true,
 			},
 		},
+
+		Blocks: map[string]schema.Block{
+			"config_device_base": schema.SingleNestedBlock{
+				MarkdownDescription: "Configuration of Devices",
+				Attributes: map[string]schema.Attribute{
+					"device_class": schema.StringAttribute{
+						MarkdownDescription: "Device class",
+						Computed:            true,
+					},
+					"rxw": schema.Int64Attribute{
+						MarkdownDescription: "rwx",
+						Computed:            true,
+					},
+				},
+			},
+		},
 	}
 }
 
@@ -148,6 +188,23 @@ func (d *AppDataSource) Read(ctx context.Context, req datasource.ReadRequest, re
 	data.DevicesLimit = types.Float64Value(app.DeviceLimit)
 	data.MCastDevicesUsed = types.Float64Value(app.Mcastdevices)
 	data.MCastDevicesLimit = types.Float64Value(app.Mcastdevlimit)
+
+	if app.CfgDevBase != nil {
+		var configDevBase AppConfigDeviceBaseDataSourceModel
+		configDevBase.DeviceClass = types.StringPointerValue(app.CfgDevBase.Devclass)
+		configDevBase.RxW = types.Int64Value(int64(*app.CfgDevBase.Rxw))
+		configDevBase.DutyCycle = types.Int64Value(int64(*app.CfgDevBase.Dutycycle))
+		configDevBase.Address = types.BoolValue(*app.CfgDevBase.Adr)
+		configDevBase.AddressMin = types.Int64Value(int64(*app.CfgDevBase.AdrMin))
+		configDevBase.AddressMax = types.Int64Value(int64(*app.CfgDevBase.AdrMax))
+		configDevBase.AddressFix = types.Int64Value(int64(*app.CfgDevBase.AdrFix))
+		configDevBase.SequenceRelax = types.BoolValue(*app.CfgDevBase.Seqrelax)
+		configDevBase.SequenceDoNotReset = types.BoolValue(*app.CfgDevBase.Seqdnreset)
+		configDevBase.AddressCountLimit = types.Int64Value(int64(*app.CfgDevBase.AdrCntLimit))
+		data.ConfigDeviceBase = &configDevBase
+	} else {
+		data.ConfigDeviceBase = nil
+	}
 
 	// Write logs using the tflog package
 	// Documentation: https://terraform.io/plugin/log

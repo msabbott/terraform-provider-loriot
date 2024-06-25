@@ -26,6 +26,7 @@ Data source for a configured application
 
 ### Read-Only
 
+- `config_device_base` (Block, Read-only) Configuration of Devices (see [below for nested schema](#nestedblock--config_device_base))
 - `decimal_id` (Number) Application ID in decimal format
 - `devices_limit` (Number) Limit of devices which can be registered
 - `devices_used` (Number) Number of devices registered with the application
@@ -35,3 +36,11 @@ Data source for a configured application
 - `organization_id` (Number) Identifier of the organization the application belongs to
 - `owner_id` (Number) User ID of the application owner
 - `visibility` (String) Visibility of the application
+
+<a id="nestedblock--config_device_base"></a>
+### Nested Schema for `config_device_base`
+
+Read-Only:
+
+- `device_class` (String) Device class
+- `rxw` (Number) rwx
